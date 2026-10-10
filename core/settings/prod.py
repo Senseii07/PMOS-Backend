@@ -8,8 +8,14 @@ DEBUG = False
 # Render provides the service hostname at runtime. Keep explicit hosts for
 # custom domains while allowing the default *.onrender.com hostname.
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="")
-if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS = [*ALLOWED_HOSTS, RENDER_EXTERNAL_HOSTNAME]
+RENDER_HOSTS = {
+    "pmos-backend-ss6g.onrender.com",
+    RENDER_EXTERNAL_HOSTNAME,
+}
+ALLOWED_HOSTS = [
+    *ALLOWED_HOSTS,
+    *(host for host in RENDER_HOSTS if host and host not in ALLOWED_HOSTS),
+]
 
 # ── HTTPS / security headers ──────────────────────────────────
 SECURE_SSL_REDIRECT = True
