@@ -5,6 +5,12 @@ from .base import *  # noqa: F401, F403
 
 DEBUG = False
 
+# Render provides the service hostname at runtime. Keep explicit hosts for
+# custom domains while allowing the default *.onrender.com hostname.
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="")
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS = [*ALLOWED_HOSTS, RENDER_EXTERNAL_HOSTNAME]
+
 # ── HTTPS / security headers ──────────────────────────────────
 SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS = 31536000
